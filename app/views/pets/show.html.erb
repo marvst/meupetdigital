@@ -1,0 +1,113 @@
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="box">
+          <div class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <h1 class="title"><%= @pet.name %></h1>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <div class="buttons">
+                  <%= link_to "Edit", edit_pet_path(@pet), class: "button is-primary" %>
+                  <%= link_to "Add Contact", new_pet_pet_info_path(@pet), class: "button is-info" %>
+                  <%= link_to "Back to Pets", pets_path, class: "button is-light" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="content">
+            <div class="columns">
+              <div class="column is-6">
+                <div class="notification is-info">
+                  <h4 class="title is-5">Pet Information</h4>
+                  <p><strong>Name:</strong> <%= @pet.name %></p>
+                  <p><strong>Species:</strong> <%= @pet.species.humanize %></p>
+                  <p><strong>Breed:</strong> <%= @pet.breed %></p>
+                  <p><strong>Owner:</strong> <%= @pet.owner.name %></p>
+                  <p><strong>Added:</strong> <%= @pet.created_at.strftime("%B %d, %Y") %></p>
+                </div>
+              </div>
+              
+              <div class="column is-6">
+                <div class="notification is-light">
+                  <h4 class="title is-5">QR Code & Public Page</h4>
+                  <p>Share your pet's information:</p>
+                  <div class="buttons">
+                    <%= link_to "Download QR Code", tags_qr_path(uuid: @pet.uuid), class: "button is-primary is-small" %>
+                    <%= link_to "View Public Page", tags_show_path(uuid: @pet.uuid), target: "_blank", class: "button is-info is-small" %>
+                  </div>
+                  <p class="is-size-7 has-text-grey mt-2">
+                    Anyone with the QR code can access your pet's public information
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Contact Information Table -->
+            <div class="mt-6">
+              <h3 class="title is-4">Contact Information</h3>
+              
+              <% if @pet.pet_infos.any? %>
+                <table class="table is-fullwidth is-striped">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Value</th>
+                      <th>Channels</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @pet.pet_infos.order(:name, :value).each do |info| %>
+                      <tr>
+                        <td><strong><%= info.name %></strong></td>
+                        <td><%= info.value %></td>
+                        <td>
+                          <div class="tags">
+                            <% info.channels.each do |channel| %>
+                              <span class="tag is-info is-light"><%= channel.humanize %></span>
+                            <% end %>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="buttons are-small">
+                            <%= link_to "Edit", edit_pet_pet_info_path(@pet, info), class: "button is-small" %>
+                            <%= link_to "Delete", pet_pet_info_path(@pet, info), 
+                                method: :delete, 
+                                data: { confirm: "Are you sure you want to delete this contact?" },
+                                class: "button is-small is-danger d-js" %>
+                            <%= link_to "Delete", pet_delete_pet_info_path(@pet, info),
+                                data: { confirm: "Are you sure you want to delete this contact?" },
+                                class: "button is-small is-danger d-no-js" %>
+                          </div>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              <% else %>
+                <div class="notification is-info">
+                  <p>No contact information added yet. Click "Add Contact" to get started!</p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+.d-no-js { display: none; }
+</style>
+<noscript>
+  <style>
+    .d-js { display: none !important; }
+    .d-no-js { display: inline-block !important; }
+  </style>
+</noscript>

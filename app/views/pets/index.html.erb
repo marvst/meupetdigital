@@ -1,0 +1,68 @@
+<section class="section">
+  <div class="container">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <h1 class="title">My Pets</h1>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <%= link_to "Add New Pet", new_pet_path, class: "button is-primary" %>
+        </div>
+      </div>
+    </div>
+    
+    <% if @pets.any? %>
+      <div class="columns is-multiline">
+        <% @pets.each do |pet| %>
+          <div class="column is-4">
+            <div class="card">
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-left">
+                    <figure class="image is-48x48">
+                      <div class="has-background-primary has-text-white has-text-centered" style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span class="has-text-weight-bold"><%= pet.name.first.upcase %></span>
+                      </div>
+                    </figure>
+                  </div>
+                  <div class="media-content">
+                    <p class="title is-4"><%= pet.name %></p>
+                    <p class="subtitle is-6"><%= pet.breed %> <%= pet.species %></p>
+                  </div>
+                </div>
+              </div>
+              
+              <footer class="card-footer">
+                <%= link_to "View", pet_path(pet), class: "card-footer-item" %>
+                <%= link_to "Edit", edit_pet_path(pet), class: "card-footer-item" %>
+                <%= link_to "Delete", pet_path(pet), 
+                    method: :delete, 
+                    data: { confirm: "Are you sure you want to delete #{pet.name}?" },
+                    class: "card-footer-item has-text-danger" %>
+              </footer>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="notification is-info">
+        <p>You haven't added any pets yet. Click "Add New Pet" to get started!</p>
+      </div>
+    <% end %>
+    
+    <div class="mt-4">
+      <%= link_to "Back to Dashboard", root_path, class: "button is-light" %>
+    </div>
+  </div>
+</section>
+<style>
+.d-no-js { display: none; }
+</style>
+<noscript>
+  <style>
+    .d-js { display: none !important; }
+    .d-no-js { display: inline-block !important; }
+  </style>
+</noscript>

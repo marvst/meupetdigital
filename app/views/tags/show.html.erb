@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @pet.name %> - MeuPetDigital</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="icon" href="/icon.png" type="image/png">
+</head>
+<body>
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title has-text-centered">
+          <%= @pet.name %>
+        </h1>
+        <h2 class="subtitle has-text-centered">
+          <%= @pet.breed %> <%= @pet.species %>
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <!-- Pet Information -->
+          <div class="box">
+            <h3 class="title is-4">Pet Information</h3>
+            <div class="content">
+              <p><strong>Name:</strong> <%= @pet.name %></p>
+              <p><strong>Species:</strong> <%= @pet.species.humanize %></p>
+              <p><strong>Breed:</strong> <%= @pet.breed %></p>
+              <p><strong>Owner:</strong> <%= @pet.owner.name %></p>
+            </div>
+          </div>
+
+          <!-- Contact Information -->
+          <% if @pet_infos.any? %>
+            <div class="box">
+              <h3 class="title is-4">Contact Information</h3>
+              <div class="columns is-multiline">
+                <% @pet_infos.each do |info| %>
+                  <div class="column is-6">
+                    <div class="notification is-light">
+                      <div class="level">
+                        <div class="level-left">
+                          <div class="level-item">
+                            <div>
+                              <p class="has-text-weight-bold"><%= info.name %></p>
+                              <p class="is-size-7 has-text-grey"><%= info.channel_labels %></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="level-right">
+                          <div class="level-item">
+                            <div class="buttons are-small">
+                              <% info.channels.each do |channel| %>
+                                <% case channel %>
+                                <% when 'phone' %>
+                                  <a href="tel:<%= info.value %>" class="button is-small is-primary">
+                                    <span class="icon">
+                                      <span>📞</span>
+                                    </span>
+                                    <span>Call</span>
+                                  </a>
+                                <% when 'whatsapp' %>
+                                  <a href="https://wa.me/<%= info.value.gsub(/\D/, '') %>" target="_blank" class="button is-small is-success">
+                                    <span class="icon">
+                                      <span>💬</span>
+                                    </span>
+                                    <span>WhatsApp</span>
+                                  </a>
+                                <% when 'email' %>
+                                  <a href="mailto:<%= info.value %>" class="button is-small is-info">
+                                    <span class="icon">
+                                      <span>📧</span>
+                                    </span>
+                                    <span>Email</span>
+                                  </a>
+                                <% when 'telegram' %>
+                                  <a href="https://t.me/<%= info.value %>" target="_blank" class="button is-small is-link">
+                                    <span class="icon">
+                                      <span>📱</span>
+                                    </span>
+                                    <span>Telegram</span>
+                                  </a>
+                                <% when 'instagram' %>
+                                  <a href="https://instagram.com/<%= info.value %>" target="_blank" class="button is-small is-danger">
+                                    <span class="icon">
+                                      <span>📸</span>
+                                    </span>
+                                    <span>Instagram</span>
+                                  </a>
+                                <% when 'facebook' %>
+                                  <a href="https://facebook.com/<%= info.value %>" target="_blank" class="button is-small is-primary">
+                                    <span class="icon">
+                                      <span>👥</span>
+                                    </span>
+                                    <span>Facebook</span>
+                                  </a>
+                                <% end %>
+                              <% end %>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% else %>
+            <div class="notification is-info">
+              <p>No contact information available for this pet.</p>
+            </div>
+          <% end %>
+
+          <!-- QR Code -->
+          <div class="box">
+            <h3 class="title is-4">QR Code</h3>
+            <div class="has-text-centered">
+              <div class="notification is-light" style="display: inline-block;">
+                <%= raw @qr_code %>
+              </div>
+              <p class="is-size-7 has-text-grey mt-2">
+                Scan this QR code to access this pet's information
+              </p>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="has-text-centered mt-6">
+            <p class="is-size-7 has-text-grey">
+              Powered by <strong>MeuPetDigital</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

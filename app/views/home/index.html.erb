@@ -1,0 +1,129 @@
+<% if logged_in? %>
+  <!-- Logged in user view -->
+  <section class="hero is-primary">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Welcome back, <%= current_user.name %>!
+        </h1>
+        <h2 class="subtitle">
+          Manage your pets and their digital records
+        </h2>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-8">
+          <div class="box">
+            <h3 class="title is-4">Your Pets</h3>
+            
+            <% if current_user.pets.any? %>
+              <div class="columns is-multiline">
+                <% current_user.pets.each do |pet| %>
+                  <div class="column is-6">
+                    <div class="card">
+                      <div class="card-content">
+                        <p class="title is-5"><%= pet.name %></p>
+                        <p class="subtitle is-6"><%= pet.breed %> <%= pet.species %></p>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="notification is-info">
+                <p>You haven't added any pets yet. Add your first pet to get started!</p>
+              </div>
+            <% end %>
+            
+            <div class="mt-4">
+              <%= link_to "Add New Pet", new_pet_path, class: "button is-primary" %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="column is-4">
+          <div class="box">
+            <h3 class="title is-4">Quick Actions</h3>
+            <div class="buttons">
+              <%= link_to "Add Pet", new_pet_path, class: "button is-fullwidth" %>
+              <%= link_to "View Pets", pets_path, class: "button is-fullwidth" %>
+              <a href="#" class="button is-fullwidth">Settings</a>
+            </div>
+          </div>
+          
+          <div class="box mt-4">
+            <h3 class="title is-4">Account</h3>
+            <p><strong>Email:</strong> <%= current_user.email %></p>
+            <p><strong>Name:</strong> <%= current_user.name %></p>
+            <div class="mt-3">
+              <%= link_to "Logout", logout_path, method: :delete, class: "button is-danger is-small" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<% else %>
+  <!-- Guest user view -->
+  <section class="hero is-primary is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <h1 class="title is-1 has-text-centered">
+              Welcome to MeuPetDigital
+            </h1>
+            <h2 class="subtitle is-4 has-text-centered">
+              Manage your pets' digital records with ease
+            </h2>
+            
+            <div class="box mt-6">
+              <div class="content">
+                <h3 class="title is-4">Features:</h3>
+                <ul>
+                  <li>Secure email-based authentication</li>
+                  <li>Digital pet records management</li>
+                  <li>Vaccination and health tracking</li>
+                  <li>Vet appointment scheduling</li>
+                  <li>Pet photo gallery</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="columns mt-6">
+              <div class="column">
+                <div class="card">
+                  <div class="card-content">
+                    <p class="title">Secure Login</p>
+                    <p class="subtitle">No passwords needed - just enter your email</p>
+                  </div>
+                  <footer class="card-footer">
+                    <p class="card-footer-item">
+                      <%= link_to "Get Started", login_path, class: "button is-primary" %>
+                    </p>
+                  </footer>
+                </div>
+              </div>
+              
+              <div class="column">
+                <div class="notification is-info">
+                  <button class="delete"></button>
+                  <strong>New!</strong> Email-based authentication for enhanced security.
+                </div>
+                
+                <div class="buttons">
+                  <%= link_to "Login", login_path, class: "button is-primary" %>
+                  <%= link_to "Learn More", "#", class: "button is-outlined" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %> 
